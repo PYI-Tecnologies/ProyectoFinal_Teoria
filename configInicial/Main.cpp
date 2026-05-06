@@ -210,7 +210,33 @@ int main()
 
         glBindVertexArray(VAO);
 
+        // Base oscura
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, -0.75f, 0.0f));
+        model = glm::scale(model, glm::vec3(10.0f, 0.05f, 10.0f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Lineas beige horizontales
+        for (int li = -2; li <= 2; li++) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(0.0f, -0.72f, li * 2.0f));
+            model = glm::scale(model, glm::vec3(10.0f, 0.02f, 0.15f));
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+
+        // Lineas beige verticales
+        for (int li = -2; li <= 2; li++) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(li * 2.0f, -0.72f, 0.0f));
+            model = glm::scale(model, glm::vec3(0.15f, 0.02f, 10.0f));
+            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+
+        // ===== BOTE DE BASURA =====
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.6f, 1.0f, 0.6f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -236,7 +262,6 @@ int main()
 
         glBindVertexArray(0);
 
-        
         glBindVertexArray(VAOAmarillo);
 
         // Cuerpo amarillo
