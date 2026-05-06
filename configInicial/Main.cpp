@@ -152,38 +152,56 @@ int main()
 
         glBindVertexArray(VAO);
 
-        // Cuerpo del bote
+        
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.6f, 1.0f, 0.6f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Aro superior del bote
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, 0.55f, 0.0f));
         model = glm::scale(model, glm::vec3(0.65f, 0.05f, 0.65f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Tapa del bote
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, 0.62f, 0.0f));
         model = glm::scale(model, glm::vec3(0.55f, 0.08f, 0.55f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Base del bote
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, -0.52f, 0.0f));
         model = glm::scale(model, glm::vec3(0.55f, 0.05f, 0.55f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Cuerpo basico del contenedor
+        // Cuerpo
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.8f, 1.2f, 0.8f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Tapa del contenedor
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.5f, 0.65f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.85f, 0.1f, 0.85f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Ranura para meter el plastico
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.5f, 0.65f, 0.35f));
+        model = glm::scale(model, glm::vec3(0.3f, 0.05f, 0.1f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Base del contenedor
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.5f, -0.62f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.85f, 0.05f, 0.85f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
