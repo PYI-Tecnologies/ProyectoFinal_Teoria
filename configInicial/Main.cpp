@@ -113,13 +113,71 @@ int main()
         -0.5f,  0.5f, -0.5f,  0.7f, 0.7f, 0.7f
     };
 
-    GLuint VBO, VAO;
+    // Vertices amarillos para el contenedor
+    float verticesAmarillo[] = {
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+
+         0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.85f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 0.85f, 0.0f
+    };
+
+    GLuint VBO, VAO, VBOAmarillo, VAOAmarillo;
+
+    // VAO gris para bote de basura
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+    glBindVertexArray(0);
 
+    // VAO amarillo para contenedor de reciclaje
+    glGenVertexArrays(1, &VAOAmarillo);
+    glGenBuffers(1, &VBOAmarillo);
+    glBindVertexArray(VAOAmarillo);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOAmarillo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesAmarillo), verticesAmarillo, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
@@ -152,7 +210,6 @@ int main()
 
         glBindVertexArray(VAO);
 
-        
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.6f, 1.0f, 0.6f));
@@ -177,31 +234,50 @@ int main()
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Cuerpo
+        glBindVertexArray(0);
+
+        
+        glBindVertexArray(VAOAmarillo);
+
+        // Cuerpo amarillo
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.8f, 1.2f, 0.8f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Tapa del contenedor
+        // Tapa amarilla
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f, 0.65f, 0.0f));
         model = glm::scale(model, glm::vec3(0.85f, 0.1f, 0.85f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Ranura para meter el plastico
+        // Ranura
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f, 0.65f, 0.35f));
         model = glm::scale(model, glm::vec3(0.3f, 0.05f, 0.1f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Base del contenedor
+        // Base amarilla
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.5f, -0.62f, 0.0f));
         model = glm::scale(model, glm::vec3(0.85f, 0.05f, 0.85f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Rueda izquierda
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.1f, -0.68f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Rueda derecha
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.9f, -0.68f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -212,6 +288,8 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAOAmarillo);
+    glDeleteBuffers(1, &VBOAmarillo);
     glfwTerminate();
     return 0;
 }
