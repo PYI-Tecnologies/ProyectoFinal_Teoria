@@ -21,11 +21,9 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 void MouseCallback(GLFWwindow* window, double xPos, double yPos);
 void DoMovement();
 
-// Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
-// Camera
 Camera camera(glm::vec3(0.0f, 1.0f, 5.0f));
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
@@ -44,7 +42,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Bote de Basura - Lobby FI", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Lobby FI - Objetos", nullptr, nullptr);
 
     if (nullptr == window)
     {
@@ -71,7 +69,6 @@ int main()
 
     Shader ourShader("Shader/core.vs", "Shader/core.frag");
 
-    // Vertices del cubo base
     float vertices[] = {
         -0.5f, -0.5f,  0.5f,  0.5f, 0.5f, 0.5f,
          0.5f, -0.5f,  0.5f,  0.5f, 0.5f, 0.5f,
@@ -123,10 +120,8 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // Posicion
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
-    // Color
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
@@ -159,28 +154,36 @@ int main()
 
         // Cuerpo del bote
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.6f, 1.0f, 0.6f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Aro superior del bote
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.55f, 0.0f));
+        model = glm::translate(model, glm::vec3(-1.5f, 0.55f, 0.0f));
         model = glm::scale(model, glm::vec3(0.65f, 0.05f, 0.65f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Tapa del bote
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.62f, 0.0f));
+        model = glm::translate(model, glm::vec3(-1.5f, 0.62f, 0.0f));
         model = glm::scale(model, glm::vec3(0.55f, 0.08f, 0.55f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Base del bote
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, -0.52f, 0.0f));
+        model = glm::translate(model, glm::vec3(-1.5f, -0.52f, 0.0f));
         model = glm::scale(model, glm::vec3(0.55f, 0.05f, 0.55f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Cuerpo basico del contenedor
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.8f, 1.2f, 0.8f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
