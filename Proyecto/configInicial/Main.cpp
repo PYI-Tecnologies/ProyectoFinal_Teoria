@@ -45,8 +45,8 @@ GLuint LoadTextureRGBA(const char* path)
 		glBindTexture(GL_TEXTURE_2D, id);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
@@ -477,6 +477,10 @@ int main()
 		DoMovement();
 		Animation();
 
+		/*std::cout << "X: " << camera.GetPosition().x
+			<< " Y: " << camera.GetPosition().y
+			<< " Z: " << camera.GetPosition().z << std::endl;*/
+
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -569,6 +573,19 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Sotano.Draw(lightingShader);
 		glDisable(GL_BLEND);
+
+		// Mural
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tMural);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "diffuse"), 0);
+		glm::mat4 modelMural(1);
+		modelMural = glm::translate(modelMural, glm::vec3(0.05f, 3.8f, -13.0f));
+		modelMural = glm::rotate(modelMural, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelMural = glm::scale(modelMural, glm::vec3(18.0f, 3.0f, 0.05f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMural));
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
 
 		//Dibujar modelos 
 		
