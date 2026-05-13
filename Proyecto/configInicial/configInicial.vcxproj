@@ -77,12 +77,12 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\lib\Release\Win32;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\lib\Release\Win32;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc140-mt.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -95,12 +95,12 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\lib\Release\Win32;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\lib\Release\Win32;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc140-mt.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -111,12 +111,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\lib\Release\Win32;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\lib\Release\Win32;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc140-mt.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -129,12 +129,12 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\include;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)/External Libraries/assimp/include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\include;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLEW\lib\Release\Win32;C:\Users\angel\Desktop\LabCompuGrafic\configInicial\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)/External Libraries/assimp/lib;$(SolutionDir)/External Libraries/SOIL2/lib;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLEW\lib\Release\Win32;C:\Users\DELL\Documents\ProyectoFinal_Teoria\Proyecto\External Libraries\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc140-mt.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

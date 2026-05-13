@@ -35,6 +35,29 @@
 #include "Reja.h"
 // Function prototypes
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
+GLuint LoadTextureRGBA(const char* path)
+{
+	GLuint id; glGenTextures(1, &id);
+	int w, h, ch;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* data = stbi_load(path, &w, &h, &ch, 4);
+	if (data) {
+		glBindTexture(GL_TEXTURE_2D, id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	else {
+		unsigned char pink[4] = { 255,0,128,255 };
+		glBindTexture(GL_TEXTURE_2D, id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, pink);
+	}
+	stbi_image_free(data);
+	return id;
+}
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 void Animation();
@@ -411,6 +434,7 @@ int main()
 	
 	//models
 	Model Sotano((char*)"Models/SotanoA.obj");
+	GLuint tMural = LoadTextureRGBA("images/mural.jpg");
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO;
