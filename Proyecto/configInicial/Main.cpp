@@ -58,9 +58,12 @@ GLuint LoadTextureRGBA(const char* path)
 	stbi_image_free(data);
 	return id;
 }
-void MouseCallback(GLFWwindow *window, double xPos, double yPos);
+
+void MouseCallback(GLFWwindow* window, double xPos, double yPos);
 void DoMovement();
 void Animation();
+void DrawConfetti(GLuint VAO, Shader& s, GLint mL, GLint cL, GLint uTL, float timer);
+
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -268,6 +271,29 @@ float velocidadReja = 2.0f;       // Qué tan rápido se deslizan
 bool p1_llego = false;
 bool p2_llego = false;
 
+//  CONFETI — extraido de ProyectoFinal (Lobby JBS)
+struct ConfettiParticle { float x, z, speed, rotSpeed, colorR, colorG, colorB, phase; };
+const int NUM_CONFETTI = 200;
+ConfettiParticle confParticles[NUM_CONFETTI];
+bool confettiActive = false;
+float confettiTimer = 0.0f;
+
+void InitConfetti()
+{
+	glm::vec3 pal[3] = { {0.0f,0.27f,0.55f},{0.85f,0.65f,0.13f},{1.0f,1.0f,1.0f} };
+	for (int i = 0; i < NUM_CONFETTI; i++) {
+		confParticles[i].x = ((rand() % 2800) / 100.0f) - 14.0f;
+		confParticles[i].z = ((rand() % 1900) / 100.0f) - 9.5f;
+		confParticles[i].speed = 0.8f + (rand() % 50) / 100.0f;
+		confParticles[i].rotSpeed = 30.0f + (rand() % 120);
+		confParticles[i].phase = (rand() % 300) / 100.0f;
+		int c = rand() % 3;
+		confParticles[i].colorR = pal[c].r;
+		confParticles[i].colorG = pal[c].g;
+		confParticles[i].colorB = pal[c].b;
+	}
+}
+
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
@@ -294,6 +320,9 @@ int main()
 
 		return EXIT_FAILURE;
 	}
+
+	srand(42);
+	InitConfetti();
 
 	glfwMakeContextCurrent(window);
 
@@ -477,6 +506,13 @@ int main()
 		DoMovement();
 		Animation();
 
+		// Confeti timer
+		if (confettiActive) {
+			confettiTimer += deltaTime;
+			if (confettiTimer > 10.0f) { confettiActive = false; confettiTimer = 0.0f; }
+		}
+
+		// Para saber la posición de la cámara 
 		/*std::cout << "X: " << camera.GetPosition().x
 			<< " Y: " << camera.GetPosition().y
 			<< " Z: " << camera.GetPosition().z << std::endl;*/
@@ -573,6 +609,13 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Sotano.Draw(lightingShader);
 		glDisable(GL_BLEND);
+
+		// Confeti
+		if (confettiActive) {
+			GLint colorLoc = glGetUniformLocation(lightingShader.Program, "color");
+			if (colorLoc == -1) colorLoc = glGetUniformLocation(lightingShader.Program, "diffuseColor");
+			DrawConfetti(VAO, lightingShader, modelLoc, colorLoc, -1, confettiTimer);
+		}
 
 		// Mural
 		glActiveTexture(GL_TEXTURE0);
@@ -800,6 +843,12 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	{
 		AnimacionRejasEnProgreso = false;   // Libera el botón al soltarlo
 	}
+
+	if (key == GLFW_KEY_E && action == GLFW_PRESS) { //Botón para el confeti
+		confettiActive = true;
+		confettiTimer = 0.0f;
+	}
+
 	if (key == GLFW_KEY_X && action == GLFW_PRESS) {
 		animPersona2Caminando = !animPersona2Caminando;
 		if (animPersona2Caminando) {
@@ -1284,6 +1333,46 @@ void Animation() {
 		persona2.rotRodillaIzq = 0.0f;
 		persona2.rotCodoDer = 0.0f;
 		persona2.rotCodoIzq = 0.0f;
+	}
+}
+
+void DrawConfetti(GLuint VAO, Shader& s, GLint mL, GLint cL, GLint uTL, float timer)
+{
+	float ceil = 3.0f, life = 4.0f;
+	for (int i = 0; i < NUM_CONFETTI; i++) {
+		const ConfettiParticle& p = confParticles[i];
+		float rel = fmodf(timer + p.phase, life);
+		float y = ceil - p.speed * rel * 1.8f; if (y < 0) continue;
+		float sc = 0.12f, lr = rel / life;
+		if (lr > 0.80f) sc *= (1 - (lr - 0.80f) / 0.20f);
+		if (sc < 0.005f) continue;
+
+		// Crear textura de 1x1 pixel con el color de la particula
+		GLuint texTemp;
+		glGenTextures(1, &texTemp);
+		glBindTexture(GL_TEXTURE_2D, texTemp);
+		unsigned char col[3] = {
+			(unsigned char)(p.colorR * 255),
+			(unsigned char)(p.colorG * 255),
+			(unsigned char)(p.colorB * 255)
+		};
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, col);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texTemp);
+
+		glm::mat4 m(1);
+		m = glm::translate(m, glm::vec3(p.x, y, p.z));
+		m = glm::rotate(m, glm::radians(p.rotSpeed * rel), glm::vec3(0, 0, 1));
+		m = glm::scale(m, glm::vec3(sc, sc * .5f, sc * .1f));
+		glUniformMatrix4fv(mL, 1, GL_FALSE, glm::value_ptr(m));
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		glDeleteTextures(1, &texTemp);
 	}
 }
 
