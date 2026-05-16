@@ -33,8 +33,9 @@
 #include "persona.h"
 #include "Lampara.h"
 #include "Reja.h"
+
 // Function prototypes
-void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 GLuint LoadTextureRGBA(const char* path)
 {
 	GLuint id; glGenTextures(1, &id);
@@ -81,77 +82,63 @@ bool active;
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
-		//fila 1 horizontal
-		glm::vec3(7.0f,  2.7f, -5.7f),  // lampara1
-		glm::vec3(7.0f,  2.7f, -10.7f), // lampara2
-		glm::vec3(7.0f, 2.7f, -18.4f),  // lampara3
-		//fila2 horizontal
-		glm::vec3(12.0f, 2.7f, -5.7f), // lampara4
-		glm::vec3(12.0f, 2.7f, -10.7f),  // lampara5
-		glm::vec3(12.0f, 2.7f, -18.4f),  // lampara6
-		//fila3 muestra horizontal
-		glm::vec3(17.0f, 2.7f, -5.7f),// lampara 7
-		glm::vec3(17.0f, 2.7f, -14.7f)//lampara 9
+		glm::vec3(7.0f,  2.7f, -5.7f),
+		glm::vec3(7.0f,  2.7f, -10.7f),
+		glm::vec3(7.0f, 2.7f, -18.4f),
+		glm::vec3(12.0f, 2.7f, -5.7f),
+		glm::vec3(12.0f, 2.7f, -10.7f),
+		glm::vec3(12.0f, 2.7f, -18.4f),
+		glm::vec3(17.0f, 2.7f, -5.7f),
+		glm::vec3(17.0f, 2.7f, -14.7f)
 };
-
-
 
 float vertices[] = {
-    // Posiciones          // Normales           // UVs
-    // Frente
-    -0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
-    // Atrás
-    -0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 0.0f,
-    // Izquierda
-    -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
-    // Derecha
-     0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
-    // Abajo
-    -0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
-    // Arriba
-    -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
+	-0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 };
-
-
 
 glm::vec3 Light1 = glm::vec3(0);
 
 //declaracion de objetos
 Carro carro(glm::vec3(37.0f, 0.050f, 11.0f));
 bool animCarro = false;
-int estadoCarro = 0; // 0: Recto, 1: Curva, 2: Posicionamiento final, 3: Detenido
+int estadoCarro = 0;
 float velocidadCarro = 4.0f;
-float rLlantaVel = 300.0f; // Velocidad de rotación de las llantas
+float rLlantaVel = 300.0f;
 bool alineadoX = false;
 bool alineadoZ = false;
 
@@ -159,46 +146,42 @@ Tren TrenRojo(glm::vec3(-1.0f, 0.0f, -26.0f));
 bool AnimTren = false;
 
 Silla SillaPlegable(glm::vec3(6.8f, 0.050f, -0.53));
-bool AnimSilla = false;      // Estado de animación de la silla
-bool SillaAbierta = false;   // Estado actual de la silla (abierta/cerrada)
+bool AnimSilla = false;
+bool SillaAbierta = false;
 bool AnimacionEnProgreso = false;
 
 Mesa MesaPlegable(glm::vec3(6.8f, 0.74f, -1.8f));
-bool AnimMesa = false;           // Estado de animación de la mesa
-bool MesaAbierta = false;        // Estado actual de la mesa (abierta/cerrada)
-bool AnimacionMesaEnProgreso = false;  // Para evitar múltiples activaciones
+bool AnimMesa = false;
+bool MesaAbierta = false;
+bool AnimacionMesaEnProgreso = false;
 
 Stand stand1(glm::vec3(6.8f, 0.03f, -1.5f));
 
 Pikachu botarga(glm::vec3(19.0f, 0.05f, 2.7f));
 bool animPikachuDance = false;
 
-// Estructura para guardar las articulaciones de cada pose
 typedef struct _frame {
-	float posY;   // Rebote vertical del cuerpo
-	float pDerX;  // Pierna Derecha
-	float pIzqX;  // Pierna Izquierda
-	float cZ;    // Movimiento rítmico de cabeza
-	// Brazo Izquierdo
-	float hIzqX;  // Giro del hombro izquierdo sobre sí mismo
-	float hIzqY;  // Mueve el brazo izquierdo hacia el frente
-	float hIzqZ;  // Levanta o baja el brazo izquierdo
-	float cIzq;   // Dobla el codo izquierdo hacia la cara
-	// Brazo Derecho
-	float hDerX;  // Giro del hombro derecho sobre sí mismo
-	float hDerY;  // Mueve el brazo derecho hacia el frente
-	float hDerZ;  // Levanta o baja el brazo derecho
-	float cDer;   // Dobla el codo derecho
+	float posY;
+	float pDerX;
+	float pIzqX;
+	float cZ;
+	float hIzqX;
+	float hIzqY;
+	float hIzqZ;
+	float cIzq;
+	float hDerX;
+	float hDerY;
+	float hDerZ;
+	float cDer;
 } FRAME;
 
 #define MAX_FRAMES 4
 FRAME KeyFrame[MAX_FRAMES];
 
-int playIndex = 0;       // Indica en qué frame vamos
-int i_max_steps = 60;    // Velocidad de interpolación (menor = más rápido el baile)
-int i_curr_steps = 0;    // Contador de pasos actual
+int playIndex = 0;
+int i_max_steps = 60;
+int i_curr_steps = 0;
 
-// Variables de incremento para suavizar la animación
 float inc_posY, inc_pDerX, inc_pIzqX, inc_cZ;
 float inc_hIzqX, inc_hIzqY, inc_hIzqZ, inc_cIzq;
 float inc_hDerX, inc_hDerY, inc_hDerZ, inc_cDer;
@@ -207,31 +190,28 @@ Pikachu botarga2(glm::vec3(-17.0f, 0.05f, 2.7f));
 bool animScubaCat = false;
 
 typedef struct _frameScuba {
-	float posX;   // Desplazamiento lateral del cuerpo
-	float posY;   // Rebote vertical del cuerpo
-	float pDerX;  // Pierna Derecha
-	float pIzqX;  // Pierna Izquierda
-	float cZ;    // Inclinación lateral de la cabeza
-	// Brazo Izquierdo (Mano en la boca)
-	float hIzqX;  // Giro del hombro izquierdo sobre sí mismo
-	float hIzqY;  // Mueve el brazo izquierdo hacia el frente (pecho/boca)
-	float hIzqZ;  // Levanta o baja el brazo izquierdo
-	float cIzq;   // Dobla el codo izquierdo hacia la cara
-	// Brazo Derecho (Recto)
-	float hDerX;  // Giro del hombro derecho sobre sí mismo
-	float hDerY;  // Mueve el brazo derecho hacia el frente
-	float hDerZ;  // Levanta o baja el brazo derecho
-	float cDer;   // Dobla el codo derecho
+	float posX;
+	float posY;
+	float pDerX;
+	float pIzqX;
+	float cZ;
+	float hIzqX;
+	float hIzqY;
+	float hIzqZ;
+	float cIzq;
+	float hDerX;
+	float hDerY;
+	float hDerZ;
+	float cDer;
 } FRAME_SCUBA;
 
 #define MAX_FRAMES_SCUBA 4
 FRAME_SCUBA KeyFrameScuba[MAX_FRAMES_SCUBA];
 
 int playIndexScuba = 0;
-int i_max_stepsScuba = 50; 
+int i_max_stepsScuba = 50;
 int i_curr_stepsScuba = 0;
 
-// Incrementos para la interpolación de botarga2
 float incS_posX, incS_posY, incS_pDerX, incS_pIzqX;
 float incS_hIzqX, incS_hIzqY, incS_hIzqZ, incS_cIzq;
 float incS_hDerX, incS_hDerY, incS_hDerZ, incS_cDer;
@@ -241,15 +221,15 @@ Persona persona1(glm::vec3(6.8f, 0.13f, -1.1f));
 
 Persona personaCaminando(glm::vec3(12.f, 0.13f, 1.0f));
 bool animPersonaCaminando = false;
-int estadoCaminando = 0; // 0: Reposo, 1: Pierna Der. Adelante, 2: Pierna Izq. Adelante
-float velocidadCaminata = 80.0f; // Velocidad de rotación de las extremidades
-float limitePaso = 35.0f; // Ángulo máximo que pueden alcanzar las piernas
+int estadoCaminando = 0;
+float velocidadCaminata = 80.0f;
+float limitePaso = 35.0f;
 
 Persona persona2(glm::vec3(28.0f, 0.13f, -18.1f));
 bool animPersona2Caminando = false;
-int estadoCaminando2 = 0; // 0: Reposo, 1: Pierna Der. Adelante, 2: Pierna Izq. Adelante
-float velocidadCaminata2 = 80.0f; // Velocidad de rotación de las extremidades
-float limitePaso2 = 35.0f; // Ángulo máximo que pueden alcanzar las piernas
+int estadoCaminando2 = 0;
+float velocidadCaminata2 = 80.0f;
+float limitePaso2 = 35.0f;
 int fasePersona2 = 0;
 
 Lampara lampara1(glm::vec3(17.0f, 3.85f, -5.67f));
@@ -264,14 +244,14 @@ Stand stand3(glm::vec3(11.5f, 0.03f, -4.2f));
 
 Reja rejaPuertaIzq(glm::vec3(6.5f, 1.0f, -0.02f));
 Reja rejaPuertaDer(glm::vec3(22.5f, 1.0f, -0.02f));
-bool AnimRejas = false;           // Estado de animación de la reja
-bool RejasAbiertas = true;       // Estado actual (abierta/cerrada)
-bool AnimacionRejasEnProgreso = false; // Para evitar el rebote del teclado
-float velocidadReja = 2.0f;       // Qué tan rápido se deslizan
+bool AnimRejas = false;
+bool RejasAbiertas = true;
+bool AnimacionRejasEnProgreso = false;
+float velocidadReja = 2.0f;
 bool p1_llego = false;
 bool p2_llego = false;
 
-//  CONFETI — extraido de ProyectoFinal (Lobby JBS)
+//  CONFETI
 struct ConfettiParticle { float x, z, speed, rotSpeed, colorR, colorG, colorB, phase; };
 const int NUM_CONFETTI = 200;
 ConfettiParticle confParticles[NUM_CONFETTI];
@@ -294,15 +274,220 @@ void InitConfetti()
 	}
 }
 
+// ── ANIMACION 5: Señalética pulsante ─────────────────────────────────────────
+GLuint texSenal;
+GLuint senalVAO, senalVBO;
+float quadVertsSenal[] = {
+	-0.5f,-0.5f,0,  0,0,1,  0,0,
+	 0.5f,-0.5f,0,  0,0,1,  1,0,
+	 0.5f, 0.5f,0,  0,0,1,  1,1,
+	 0.5f, 0.5f,0,  0,0,1,  1,1,
+	-0.5f, 0.5f,0,  0,0,1,  0,1,
+	-0.5f,-0.5f,0,  0,0,1,  0,0,
+};
+glm::vec3 posicionesSenal[] = {
+	glm::vec3(7.0f,  2.2f, -5.5f),
+	glm::vec3(12.0f, 2.2f, -5.5f),
+	glm::vec3(17.0f, 2.2f, -5.5f),
+	glm::vec3(7.0f,  2.2f, -18.0f),
+};
+
+// ── ANIMACION 6: Tooltip de stand ────────────────────────────────────────────
+GLuint texTooltip;
+float tooltipScale = 0.0f;
+float tooltipTarget = 0.0f;
+int   tooltipStandIdx = -1;
+glm::vec3 posicionesStandTooltip[] = {
+	glm::vec3(6.8f,  1.0f, -1.5f),
+	glm::vec3(19.0f, 1.0f, -1.5f),
+	glm::vec3(11.5f, 1.0f, -4.2f),
+};
+const float TOOLTIP_RADIO = 3.2f;
+
+// ── ANIMACION 7: Transicion de camara ────────────────────────────────────────
+bool  animCamTransicion = false;
+bool  camEnInterior = false;
+float tCam = 0.0f;
+float velCam = 0.28f;
+bool  camTransActiva = false;
+glm::vec3 camTransPos;
+glm::vec3 bezP0 = glm::vec3(15.0f, 1.5f, 12.0f);
+glm::vec3 bezP1 = glm::vec3(14.0f, 1.5f, 2.0f);
+glm::vec3 bezP2 = glm::vec3(13.5f, 1.5f, -6.0f);
+glm::vec3 bezP3 = glm::vec3(13.0f, 1.5f, -13.5f);
+
+// ── ANIMACION 8: Bandera UNAM ondeando ───────────────────────────────────────
+GLuint texBandera;
+const int FLAG_COLS = 16;
+const int FLAG_ROWS = 10;
+float     flagVerts[FLAG_ROWS * FLAG_COLS * 8];
+unsigned int flagIdx[(FLAG_ROWS - 1) * (FLAG_COLS - 1) * 6];
+GLuint flagVAO, flagVBO, flagEBO;
+
+// ── ANIMACION 10: Ciclo solar ─────────────────────────────────────────────────
+float tSolar = 0.25f;
+float velSolar = 1.0f / 30.0f;
+bool  cicloSolarAcelerado = false;
+
 // Deltatime
-GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
-GLfloat lastFrame = 0.0f;  	// Time of last frame
+GLfloat deltaTime = 0.0f;
+GLfloat lastFrame = 0.0f;
+
+// ── Funciones auxiliares nuevas ───────────────────────────────────────────────
+glm::vec3 EvalBezier(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float t)
+{
+	float u = 1.0f - t;
+	return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3;
+}
+
+glm::vec3 GetSunDirection(float t)
+{
+	float angulo = t * glm::pi<float>();
+	return glm::normalize(glm::vec3(-cosf(angulo), -sinf(angulo) - 0.1f, -0.3f));
+}
+
+glm::vec3 GetSunColor(float t)
+{
+	if (t < 0.15f || t > 0.85f) return glm::vec3(1.0f, 0.55f, 0.2f);
+	if (t < 0.25f || t > 0.75f) return glm::vec3(1.0f, 0.80f, 0.5f);
+	return glm::vec3(1.0f, 0.95f, 0.75f);
+}
+
+void BuildSenalVAO()
+{
+	glGenVertexArrays(1, &senalVAO);
+	glGenBuffers(1, &senalVBO);
+	glBindVertexArray(senalVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, senalVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertsSenal), quadVertsSenal, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	glBindVertexArray(0);
+}
+
+void BuildFlagMesh()
+{
+	for (int r = 0; r < FLAG_ROWS; r++) {
+		for (int c = 0; c < FLAG_COLS; c++) {
+			int idx = (r * FLAG_COLS + c) * 8;
+			float u = (float)c / (FLAG_COLS - 1);
+			float v = (float)r / (FLAG_ROWS - 1);
+			flagVerts[idx + 0] = u * 2.0f - 1.0f;
+			flagVerts[idx + 1] = v * 1.5f;
+			flagVerts[idx + 2] = 0.0f;
+			flagVerts[idx + 3] = 0.0f; flagVerts[idx + 4] = 0.0f; flagVerts[idx + 5] = 1.0f;
+			flagVerts[idx + 6] = u;    flagVerts[idx + 7] = 1.0f - v;
+		}
+	}
+	int ei = 0;
+	for (int r = 0; r < FLAG_ROWS - 1; r++) {
+		for (int c = 0; c < FLAG_COLS - 1; c++) {
+			int tl = r * FLAG_COLS + c, tr = tl + 1, bl = tl + FLAG_COLS, br = bl + 1;
+			flagIdx[ei++] = tl; flagIdx[ei++] = bl; flagIdx[ei++] = tr;
+			flagIdx[ei++] = tr; flagIdx[ei++] = bl; flagIdx[ei++] = br;
+		}
+	}
+	glGenVertexArrays(1, &flagVAO);
+	glGenBuffers(1, &flagVBO);
+	glGenBuffers(1, &flagEBO);
+	glBindVertexArray(flagVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, flagVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(flagVerts), flagVerts, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, flagEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(flagIdx), flagIdx, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	glBindVertexArray(0);
+}
+
+void UpdateFlagWave(float time)
+{
+	for (int r = 0; r < FLAG_ROWS; r++) {
+		for (int c = 0; c < FLAG_COLS; c++) {
+			int idx = (r * FLAG_COLS + c) * 8;
+			float u = (float)c / (FLAG_COLS - 1);
+			float amplitud = u * 0.18f;
+			float dz = sinf(u * 3.5f - time * 2.8f) * amplitud
+				+ sinf(u * 6.0f - time * 4.2f + 1.1f) * amplitud * 0.35f;
+			flagVerts[idx + 2] = dz;
+			float dzdu = cosf(u * 3.5f - time * 2.8f) * 0.18f * 3.5f
+				+ cosf(u * 6.0f - time * 4.2f + 1.1f) * 0.18f * 0.35f * 6.0f;
+			glm::vec3 n = glm::normalize(glm::vec3(-dzdu, 0.0f, 1.0f));
+			flagVerts[idx + 3] = n.x; flagVerts[idx + 4] = n.y; flagVerts[idx + 5] = n.z;
+		}
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, flagVBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(flagVerts), flagVerts);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void DrawSignage(Shader& shader, GLint modelLoc, float time, glm::mat4 view)
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texSenal);
+	glBindVertexArray(senalVAO);
+	float pulso = 0.925f + 0.075f * sinf(time * 2.5f);
+	for (int i = 0; i < 4; i++) {
+		glm::mat4 m(1.0f);
+		m[0][0] = view[0][0]; m[0][1] = view[1][0]; m[0][2] = view[2][0];
+		m[1][0] = view[0][1]; m[1][1] = view[1][1]; m[1][2] = view[2][1];
+		m[2][0] = view[0][2]; m[2][1] = view[1][2]; m[2][2] = view[2][2];
+		m[3] = glm::vec4(posicionesSenal[i], 1.0f);
+		m = glm::scale(m, glm::vec3(pulso * 0.45f, pulso * 0.45f, 0.01f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m));
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+	glBindVertexArray(0);
+}
+
+void UpdateTooltip(glm::vec3 camPos, float dt)
+{
+	tooltipTarget = 0.0f;
+	tooltipStandIdx = -1;
+	for (int i = 0; i < 3; i++) {
+		if (glm::length(camPos - posicionesStandTooltip[i]) < TOOLTIP_RADIO) {
+			tooltipTarget = 1.0f;
+			tooltipStandIdx = i;
+			break;
+		}
+	}
+	float vel = dt / 0.3f;
+	if (tooltipTarget > tooltipScale) tooltipScale = fminf(tooltipScale + vel, 1.0f);
+	else                              tooltipScale = fmaxf(tooltipScale - vel, 0.0f);
+}
+
+void DrawTooltip(Shader& shader, GLint modelLoc, glm::mat4 view)
+{
+	if (tooltipScale < 0.01f || tooltipStandIdx < 0) return;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texTooltip);
+	glBindVertexArray(senalVAO);
+	glm::vec3 pos = posicionesStandTooltip[tooltipStandIdx] + glm::vec3(0, 0.8f, 0);
+	glm::mat4 m(1.0f);
+	m[0][0] = view[0][0]; m[0][1] = view[1][0]; m[0][2] = view[2][0];
+	m[1][0] = view[0][1]; m[1][1] = view[1][1]; m[1][2] = view[2][1];
+	m[2][0] = view[0][2]; m[2][1] = view[1][2]; m[2][2] = view[2][2];
+	m[3] = glm::vec4(pos, 1.0f);
+	float s = tooltipScale * 1.4f;
+	m = glm::scale(m, glm::vec3(s, s * 0.55f, 0.01f));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(m));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+}
 
 int main()
 {
 	// Init GLFW
 	glfwInit();
-	
+
 	// Set all the required options for GLFW
 	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -343,11 +528,12 @@ int main()
 		std::cout << "Failed to initialize GLEW" << std::endl;
 		return EXIT_FAILURE;
 	}
+
 	//inicializamos objetos
 	carro.Inicializar();
 	carro.rotacion = glm::vec3(0.0f, 180.0f, 0.0f);
 	carro.escala = glm::vec3(1.1f, 1.1f, 1.1f);
-	
+
 	TrenRojo.Inicializar();
 	TrenRojo.escala = glm::vec3(3.0f, 2.2f, 2.5f);
 
@@ -355,11 +541,11 @@ int main()
 	SillaPlegable.rotacion = glm::vec3(0.0f, 180.0f, 0.0f);
 
 	MesaPlegable.Inicializar();
-	
+
 	stand1.Inicializar();
 	stand1.rotacion = glm::vec3(0.0f, 180.0f, 0.0f);
 	stand1.escala = glm::vec3(1.0f, 0.7f, 1.0f);
-	
+
 	persona1.Inicializar();
 	persona1.rotacion = glm::vec3(0.0f, 180.0f, 0.0f);
 	persona1.escala = glm::vec3(0.42f, 0.42f, 0.42f);
@@ -371,7 +557,7 @@ int main()
 	persona2.Inicializar();
 	persona2.rotacion = glm::vec3(0.0f, -180.0f, 0.0f);
 	persona2.escala = glm::vec3(0.42f, 0.42f, 0.42f);
-	
+
 	silla2.Inicializar();
 	silla2.rotacion = glm::vec3(0.0f, 180.0f, 0.0f);
 	silla2.anguloPlegado = 165.0f;
@@ -398,7 +584,7 @@ int main()
 	KeyFrame[0].pDerX = 0.0f; KeyFrame[0].pIzqX = 0.0f; // Cruce de pies
 	KeyFrame[0].cZ = 0.0f; // Cabeza acompaña el ritmo
 	//Brazo izquierdo
-	KeyFrame[0].hIzqX = 15.0f; KeyFrame[0].hIzqY = -50.0f; KeyFrame[0].hIzqZ = 40.0f; KeyFrame[0].cIzq = -90.0f; 
+	KeyFrame[0].hIzqX = 15.0f; KeyFrame[0].hIzqY = -50.0f; KeyFrame[0].hIzqZ = 40.0f; KeyFrame[0].cIzq = -90.0f;
 	KeyFrame[0].hDerX = -30.0f; KeyFrame[0].hDerY = 30.0f; KeyFrame[0].hDerZ = 10.0f; KeyFrame[0].cDer = 0.0f;
 
 	// Frame 1
@@ -409,14 +595,14 @@ int main()
 	KeyFrame[1].hDerX = 10.0f; KeyFrame[1].hDerY = 50.0f; KeyFrame[1].hDerZ = 40.0f; KeyFrame[1].cDer = 90.0f; //Brazo derecho
 
 	// Frame 2: Cruza Pie Izquierdo, Sube Brazo Derecho (Opuesto)
-	KeyFrame[2].posY = 0.2f; 
+	KeyFrame[2].posY = 0.2f;
 	KeyFrame[2].pDerX = -10.0f; KeyFrame[2].pIzqX = 20.0f; KeyFrame[2].cZ = 0.0f;
 	// Brazo Izq (Abajo/Atrás)
 	KeyFrame[2].hIzqX = 15.0f; KeyFrame[2].hIzqY = -50.0f; KeyFrame[2].hIzqZ = 40.0f; KeyFrame[2].cIzq = -90.0f; //Brazo izquierdo
 	KeyFrame[2].hDerX = -30.0f; KeyFrame[2].hDerY = -30.0f; KeyFrame[2].hDerZ = 10.0f; KeyFrame[2].cDer = 0.0f;
 
 	// Frame 3: Descruce (Regreso a postura neutral)
-	KeyFrame[3].posY = 0.0f; 
+	KeyFrame[3].posY = 0.0f;
 	KeyFrame[3].pDerX = 10.0f; KeyFrame[3].pIzqX = -20.0f; KeyFrame[3].cZ = -10.0f;
 	KeyFrame[3].hIzqX = 1.0f; KeyFrame[3].hIzqY = 30.0f; KeyFrame[3].hIzqZ = 10.0f; KeyFrame[3].cIzq = 0.0f;
 	KeyFrame[3].hDerX = 10.0f; KeyFrame[3].hDerY = 50.0f; KeyFrame[3].hDerZ = 40.0f; KeyFrame[3].cDer = 90.0f; //Brazo derecho
@@ -456,14 +642,23 @@ int main()
 	//Define the viewport dimensions
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-
-
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
-	
+
 	//models
 	Model Sotano((char*)"Models/SotanoA.obj");
 	GLuint tMural = LoadTextureRGBA("images/mural.jpg");
+
+	// Texturas nuevas (animaciones 5, 6, 8)
+	// senal_evacuacion.png y tooltip_stand.png: pon cualquier imagen en images/
+	// Si no existen aparecen en rosa (fallback del LoadTextureRGBA)
+	texBandera = LoadTextureRGBA("images/banderaUnam.jpg");
+	texSenal = LoadTextureRGBA("images/senal_evacuacion.png");
+	texTooltip = LoadTextureRGBA("images/tooltip_stand.png");
+
+	// VAOs nuevos (animaciones 5, 6, 8)
+	BuildSenalVAO();
+	BuildFlagMesh();
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO;
@@ -488,7 +683,7 @@ int main()
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "material.specular"), 1);
 
 	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 100.0f);
-	
+
 	// Define the viewport dimensions
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -512,48 +707,67 @@ int main()
 			if (confettiTimer > 10.0f) { confettiActive = false; confettiTimer = 0.0f; }
 		}
 
-		// Para saber la posición de la cámara 
-		/*std::cout << "X: " << camera.GetPosition().x
-			<< " Y: " << camera.GetPosition().y
-			<< " Z: " << camera.GetPosition().z << std::endl;*/
+		// Animacion 7: avanzar parametro de transicion de camara
+		if (animCamTransicion) {
+			tCam += velCam * deltaTime;
+			if (tCam >= 1.0f) {
+				tCam = 1.0f;
+				animCamTransicion = false;
+				camTransActiva = false;
+				camEnInterior = !camEnInterior;
+			}
+			camTransPos = EvalBezier(
+				camEnInterior ? bezP3 : bezP0,
+				camEnInterior ? bezP2 : bezP1,
+				camEnInterior ? bezP1 : bezP2,
+				camEnInterior ? bezP0 : bezP3, tCam);
+			camTransActiva = true;
+		}
 
-		// Clear the colorbuffer
+		// Animacion 10: avanzar ciclo solar
+		tSolar += (cicloSolarAcelerado ? velSolar * 5.0f : velSolar) * deltaTime;
+		if (tSolar > 1.0f) tSolar = 0.0f;
+
+		// Animacion 6: detectar proximidad a stands para tooltip
+		UpdateTooltip(camera.GetPosition(), deltaTime);
+
+		// Para saber la posición de la cámara 
+		std::cout << "X: " << camera.GetPosition().x
+			<< " Y: " << camera.GetPosition().y
+			<< " Z: " << camera.GetPosition().z << std::endl;
+
+			// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	   
+
 		// OpenGL options
 		glEnable(GL_DEPTH_TEST);
 
 		// Use cooresponding shader when setting uniforms/drawing objects
 		lightingShader.Use();
 
-        glUniform1i(glGetUniformLocation(lightingShader.Program, "diffuse"), 0);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "diffuse"), 0);
 		//glUniform1i(glGetUniformLocation(lightingShader.Program, "specular"),1);
 
 		GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");
 		glUniform3f(viewPosLoc, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
-
-		// Directional light
-		//Inclinada para simular que el sol va subiendo (Sombras laterales)
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), -0.5f, -0.7f, -0.3f);
-
-		//Luz de tono suave
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"), 0.55f, 0.55f, 0.45f);
-
-		// El color de la luz solar (Blanco-Amarillento)
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 1.0f, 0.9f, 0.7f);
-		// Reflejo del sol en superficies brillantes
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"), 0.5f, 0.5f, 0.4f);
-
+		// Animacion 10: luz solar dinámica (reemplaza el dirLight fijo)
+		glm::vec3 sunDir = GetSunDirection(tSolar);
+		glm::vec3 sunColor = GetSunColor(tSolar);
+		float intensidad = 0.3f + 0.7f * sinf(tSolar * glm::pi<float>());
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), sunDir.x, sunDir.y, sunDir.z);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"), 0.25f * intensidad, 0.25f * intensidad, 0.20f * intensidad);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), sunColor.r * intensidad, sunColor.g * intensidad, sunColor.b * intensidad);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"), 0.4f * intensidad, 0.4f * intensidad, 0.35f * intensidad);
 
 		// Point light 1
-	    glm::vec3 lightColor;
-		lightColor.x= abs(sin(glfwGetTime() *Light1.x));
-		lightColor.y= abs(sin(glfwGetTime() *Light1.y));
-		lightColor.z= sin(glfwGetTime() *Light1.z);
+		glm::vec3 lightColor;
+		lightColor.x = abs(sin(glfwGetTime() * Light1.x));
+		lightColor.y = abs(sin(glfwGetTime() * Light1.y));
+		lightColor.z = sin(glfwGetTime() * Light1.z);
 
-		for (int i = 0; i < 8; i++) { 
+		for (int i = 0; i < 8; i++) {
 			std::string number = std::to_string(i);
 
 			glUniform3f(glGetUniformLocation(lightingShader.Program, ("pointLights[" + number + "].position").c_str()), pointLightPositions[i].x, pointLightPositions[i].y, pointLightPositions[i].z);
@@ -581,14 +795,21 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.quadratic"), 0.032f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.cutOff"), glm::cos(glm::radians(12.5f)));
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(15.0f)));
-		
+
 
 		// Set material properties
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
 
 		// Create camera transformations
+		// Animacion 7: usar camara de transicion o la libre segun el estado
 		glm::mat4 view;
-		view = camera.GetViewMatrix();
+		if (camTransActiva) {
+			glm::vec3 destino = camEnInterior ? bezP0 : bezP3;
+			view = glm::lookAt(camTransPos, destino, glm::vec3(0, 1, 0));
+		}
+		else {
+			view = camera.GetViewMatrix();
+		}
 
 		// Get the uniform locations
 		GLint modelLoc = glGetUniformLocation(lightingShader.Program, "model");
@@ -604,7 +825,7 @@ int main()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glm::mat4 model(1);
-        view = camera.GetViewMatrix();	
+		view = camera.GetViewMatrix();
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Sotano.Draw(lightingShader);
@@ -630,28 +851,56 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 
+		// Animacion 8: Poste de la bandera
+		{
+			glm::mat4 mp(1);
+			mp = glm::translate(mp, glm::vec3(14.5f, 1.5f, 3.5f));
+			mp = glm::scale(mp, glm::vec3(0.06f, 3.5f, 0.06f));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mp));
+			glBindVertexArray(VAO);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glBindVertexArray(0);
+		}
+		// Animacion 8: Bandera UNAM ondeando
+		UpdateFlagWave(currentFrame);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texBandera);
+		{
+			glm::mat4 mf(1);
+			mf = glm::translate(mf, glm::vec3(14.5f, 1.8f, 3.5f));
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mf));
+			glBindVertexArray(flagVAO);
+			glDrawElements(GL_TRIANGLES, (FLAG_ROWS - 1) * (FLAG_COLS - 1) * 6, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+		}
+
+		// Animacion 5: Señaletica pulsante + Animacion 6: Tooltip
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		DrawSignage(lightingShader, modelLoc, currentFrame, view);
+		DrawTooltip(lightingShader, modelLoc, view);
+		glDisable(GL_BLEND);
+
 		//Dibujar modelos 
-		
-		
 		carro.Draw(lightingShader, VAO);
-		
+
 		TrenRojo.Draw(lightingShader, VAO);
-		
+
 		SillaPlegable.Draw(lightingShader, VAO);
-		
+
 		MesaPlegable.Draw(lightingShader, VAO);
 
 		botarga.Draw(lightingShader, VAO);
-		
+
 		stand1.Draw(lightingShader, VAO);
-		
+
 		persona1.Draw(lightingShader, VAO);
 
 		botarga2.Draw(lightingShader, VAO);
-		
+
 		rejaPuertaIzq.Draw(lightingShader, VAO);
-		
-	    rejaPuertaDer.Draw(lightingShader, VAO);
+
+		rejaPuertaDer.Draw(lightingShader, VAO);
 
 		personaCaminando.Draw(lightingShader, VAO);
 
@@ -665,7 +914,7 @@ int main()
 
 			// Posicionamos cada set en el eje X
 			matrizSet = glm::translate(matrizSet, glm::vec3(i * DesplazamientoX, 0.0f, -19.0f));
-			matrizSet = glm::translate(matrizSet, glm::vec3(-13.2f,0.05f,0.05f));
+			matrizSet = glm::translate(matrizSet, glm::vec3(-13.2f, 0.05f, 0.05f));
 			// Dibujamos usando la matriz padre
 			stand2.Draw(lightingShader, VAO, matrizSet);
 			mesa2.Draw(lightingShader, VAO, matrizSet);
@@ -683,7 +932,7 @@ int main()
 			silla3.Draw(lightingShader, VAO, matrizSet);
 		}
 
-		
+
 		float desplazamientoX = -5.0f; // Espacio entre cada lampara
 		float desplazamientoZ = -9.0f;
 		float desplazamientoZ2 = -12.75f;
@@ -695,7 +944,7 @@ int main()
 			matrizSet = glm::translate(matrizSet, glm::vec3(i * desplazamientoX, 0.0f, 0.0f));
 			lampara1.Draw(lightingShader, VAO, matrizSet);
 		}
-		
+
 		for (int i = 0; i < 3; i++) {
 			glm::mat4 matrizSet = glm::mat4(1.0f);
 			// Posicionamos cada lampara en el eje z
@@ -714,17 +963,17 @@ int main()
 			matrizSet = glm::translate(matrizSet, glm::vec3(i * -5.0f, 0.0f, desplazamientoZ2));
 			lampara1.Draw(lightingShader, VAO, matrizSet);
 		}
-		
+
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
 
-		
+
 		// Get location objects for the matrices on the lamp shader (these could be different on a different shader)
 		modelLoc = glGetUniformLocation(lampShader.Program, "model");
 		viewLoc = glGetUniformLocation(lampShader.Program, "view");
 		projLoc = glGetUniformLocation(lampShader.Program, "projection");
 
-		
+
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
@@ -741,6 +990,8 @@ int main()
 // Moves/alters the camera positions based on user input
 void DoMovement()
 {
+	// Bloquear camara libre durante transicion (Animacion 7)
+	if (camTransActiva) return;
 
 	// Camera controls
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
@@ -770,11 +1021,11 @@ void DoMovement()
 
 	}
 
-	
+
 }
 
 // Is called whenever a key is pressed/released via GLFW
-void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode)
+void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	if (GLFW_KEY_ESCAPE == key && GLFW_PRESS == action)
 	{
@@ -792,7 +1043,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 			keys[key] = false;
 		}
 	}
-	
+
 	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
 		animCarro = !animCarro;
 		if (animCarro) {
@@ -856,6 +1107,17 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 			persona2.posicion = glm::vec3(28.0f, 0.13f, -18.1f); // Reset de posición
 		}
 	}
+
+	// T → Transicion camara exterior↔interior (Animacion 7)
+	if (key == GLFW_KEY_T && action == GLFW_PRESS && !animCamTransicion) {
+		animCamTransicion = true;
+		camTransActiva = true;
+		tCam = 0.0f;
+	}
+
+	// J (mantener) → Acelerar ciclo solar (Animacion 10)
+	if (key == GLFW_KEY_J && action == GLFW_PRESS)   cicloSolarAcelerado = true;
+	if (key == GLFW_KEY_J && action == GLFW_RELEASE)  cicloSolarAcelerado = false;
 
 }
 void Animation() {
@@ -1224,7 +1486,7 @@ void Animation() {
 			persona2.rotRodillaIzq = 15.0f;
 			persona2.rotCodoDer = -15.0f;
 			persona2.rotCodoIzq = -15.0f;
-			
+
 		}
 		switch (estadoCaminando2) {
 		case 0: // GIRAR PARA MIRAR AL EJE X POSITIVO
@@ -1376,8 +1638,11 @@ void DrawConfetti(GLuint VAO, Shader& s, GLint mL, GLint cL, GLint uTL, float ti
 	}
 }
 
-void MouseCallback(GLFWwindow *window, double xPos, double yPos)
+void MouseCallback(GLFWwindow* window, double xPos, double yPos)
 {
+	// Bloquear mouse durante transicion de camara (Animacion 7)
+	if (camTransActiva) return;
+
 	if (firstMouse)
 	{
 		lastX = xPos;
