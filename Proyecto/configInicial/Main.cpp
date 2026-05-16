@@ -660,6 +660,7 @@ int main()
 
 	// NUEVO: Texturas adicionales
 	GLuint tAulaMagna = LoadTextureRGBA("images/AulaMagnaFrent.jpeg");
+	GLuint tAulaMagnaIzq = LoadTextureRGBA("images/AulaMagnaIzq.jpeg");
 	texBandera = LoadTextureRGBA("images/banderaUnam.jpg");
 	texSenal = LoadTextureRGBA("images/senal_evacuacion.png");
 	texTooltip = LoadTextureRGBA("images/tooltip_stand.png");
@@ -856,7 +857,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
 
-		// NUEVO: Pared Aula Magna (lado derecho del sotano, detras de los stands)
+		// NUEVO: Pared Aula Magna derecha (lado derecho del sotano, detras de los stands)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, tAulaMagna);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "diffuse"), 0);
@@ -865,6 +866,19 @@ int main()
 		modelAula = glm::rotate(modelAula, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelAula = glm::scale(modelAula, glm::vec3(18.0f, 4.0f, 0.05f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelAula));
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		// NUEVO: Pared Aula Magna izquierda
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tAulaMagnaIzq);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "diffuse"), 0);
+		glm::mat4 modelAulaIzq(1);
+		modelAulaIzq = glm::translate(modelAulaIzq, glm::vec3(32.0f, 2.0f, -17.2f));
+		modelAulaIzq = glm::rotate(modelAulaIzq, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelAulaIzq = glm::scale(modelAulaIzq, glm::vec3(18.0f, 4.0f, 0.05f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelAulaIzq));
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);
